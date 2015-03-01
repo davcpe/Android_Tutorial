@@ -19,7 +19,15 @@ public class MainActivity extends Activity {
 
         objUserTable = new UserTABLE(this);
         objOrderTable = new OrderTABLE(this);
-    }
+        testAddValue()
+        ;
+        
+    }//OnCreate
+
+    private void testAddValue() {
+        objUserTable.addValueUser("user","Password","Officer");
+        objOrderTable.addValueOrder("Officer","Date","CoffeeOrder",4);
+    }// testAddValue
 
 
     @Override
@@ -28,7 +36,6 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
