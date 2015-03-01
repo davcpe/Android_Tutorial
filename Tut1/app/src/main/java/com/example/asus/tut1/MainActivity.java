@@ -8,10 +8,17 @@ import android.view.MenuItem;
 
 public class MainActivity extends Activity {
 
+    private  UserTABLE  objUserTable;
+    private  OrderTABLE objOrderTable;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        objUserTable = new UserTABLE(this);
+        objOrderTable = new OrderTABLE(this);
     }
 
 
