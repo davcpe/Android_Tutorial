@@ -1,15 +1,31 @@
 package com.example.asus.tut1;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 
 public class MainActivity extends Activity {
 
     private  UserTABLE  objUserTable;
     private  OrderTABLE objOrderTable;
+    public static final String url = "";
 
 
     @Override
@@ -19,10 +35,70 @@ public class MainActivity extends Activity {
 
         objUserTable = new UserTABLE(this);
         objOrderTable = new OrderTABLE(this);
-        testAddValue()
-        ;
-        
+        testAddValue();
+
+        //synJsonTOSQLite
+        synJsonTOSQLite();
     }//OnCreate
+
+
+    private void synJsonTOSQLite() {
+        //setUp Policy
+        if(Build.VERSION.SDK_INT>9){
+            StrictMode.ThreadPolicy mypolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        }//if
+        InputStream objInputStream = null;
+        String strJSON ="";
+
+        //Create objInputStream
+        try{
+
+            HttpClient objHttpClient = new DefaultHttpClient();
+            HttpPost   objHttpPost   =  new HttpPost(url);
+            HttpResponse objHttpResponse = objHttpClient.execute(objHttpPost);
+            HttpEntity objHttpEntity = objHttpResponse.getEntity();
+            objInputStream = objHttpEntity.getContent();
+
+        }catch (Exception e){
+            Log.d("CoffeShop","Error from InputStram==>"+e.toString());
+        }
+
+        //Change InputStream to String
+        try {
+
+            BufferedReader objBufferedReader = new BufferedReader(new InputStreamReader(objInputStream ,"UTF-8"));
+            StringBuilder objStringBuilder = new StringBuilder();
+            String strLine = null;
+
+            while((strLine = objBufferedReader.readLine()) != null){
+                objStringBuilder.append(strLine);
+            }//while
+            objInputStream.close();
+            strJSON = objStringBuilder.toString();
+
+        }catch (Exception e){
+            Log.d("CoffeShop","Error Create String==>"+e.toString());
+        }
+
+        //Up Value to SQLite
+        try{
+            final JSONArray objJSONArray =  new JSONArray(strJSON);
+            for(int i=0;i< objJSONArray.length();i++){
+                JSONObject objJSONObject = objJSONArray.getJSONObject(i);
+                String strUser = objJSONObject.getString("user");
+                String strPassword = objJSONObject.getString("Password");
+                String strOfficer = objJSONObject.getString("Officer");
+
+                long insertValue  = objUserTable.addValueUser(strUser,strPassword,strOfficer);
+
+            }//for
+        }catch (Exception e ){
+           Log.d("CoffeShop","Error Up Value==>"+e.toString());
+        }
+
+    } //synJsonTOSQLite
+
+
 
     private void testAddValue() {
         objUserTable.addValueUser("user","Password","Officer");
