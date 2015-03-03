@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 
     private  UserTABLE  objUserTable;
     private  OrderTABLE objOrderTable;
-    public static final String url = "http://www.puneethbedre.com/rest/php_get_data.php";
+    //public static final String url = "http://www.puneethbedre.com/rest/php_get_data.php";
 
 
     @Override
@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
         //setUp Policy
         if(Build.VERSION.SDK_INT>9){
             StrictMode.ThreadPolicy mypolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(mypolicy);
         }//if
         InputStream objInputStream = null;
         String strJSON ="";
@@ -53,10 +54,10 @@ public class MainActivity extends Activity {
         //Create objInputStream
         try{
 
-            HttpClient objHttpClient = new DefaultHttpClient();
-            HttpPost   objHttpPost   =  new HttpPost(url);
-            HttpResponse objHttpResponse = objHttpClient.execute(objHttpPost);
-            HttpEntity objHttpEntity = objHttpResponse.getEntity();
+            HttpClient     objHttpClient   =  new DefaultHttpClient();
+            HttpPost       objHttpPost     =  new HttpPost("http://www.puneethbedre.com/rest/php_get_data.php");
+            HttpResponse   objHttpResponse =  objHttpClient.execute(objHttpPost);
+            HttpEntity     objHttpEntity   =  objHttpResponse.getEntity();
             objInputStream = objHttpEntity.getContent();
 
         }catch (Exception e){
@@ -78,16 +79,16 @@ public class MainActivity extends Activity {
 
         }catch (Exception e){
             Log.d("CoffeShop","Error Create String==>"+e.toString());
-        }
+            }
 
-        //Up Value to SQLite
-        try{
-            final JSONArray objJSONArray =  new JSONArray(strJSON);
-            for(int i=0;i< objJSONArray.length();i++){
-                JSONObject objJSONObject = objJSONArray.getJSONObject(i);
-                String strUser = objJSONObject.getString("user");
-                String strPassword = objJSONObject.getString("Password");
-                String strOfficer = objJSONObject.getString("Officer");
+                //Up Value to SQLite
+                try{
+                    final JSONArray objJSONArray =  new JSONArray(strJSON);
+                    for(int i=0;i< objJSONArray.length();i++){
+                        JSONObject objJSONObject = objJSONArray.getJSONObject(i);
+                        String strUser = objJSONObject.getString("user");
+                        String strPassword = objJSONObject.getString("Password");
+                        String strOfficer = objJSONObject.getString("Officer");
 
                 long insertValue  = objUserTable.addValueUser(strUser,strPassword,strOfficer);
 
