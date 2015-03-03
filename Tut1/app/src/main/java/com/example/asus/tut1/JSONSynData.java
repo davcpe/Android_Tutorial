@@ -1,12 +1,9 @@
 package com.example.asus.tut1;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,29 +17,23 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
-public class MainActivity extends Activity {
+/**
+ * Created by ASUS on 3/3/2015.
+ */
+public class JSONSynData {
 
     private  UserTABLE  objUserTable;
     private  OrderTABLE objOrderTable;
-    public static final String url = "http://www.puneethbedre.com/rest/php_get_data.php";
 
+    public  JSONSynData(){
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    }
 
-        objUserTable = new UserTABLE(this);
-        objOrderTable = new OrderTABLE(this);
-        testAddValue();
+    private void synJsonTOSQLite(Context context) {
 
-        //synJsonTOSQLite
-        synJsonTOSQLite();
-    }//OnCreate
+        objUserTable = new UserTABLE(context);
+        objOrderTable = new OrderTABLE(context);
 
-
-    private void synJsonTOSQLite() {
         //setUp Policy
         if(Build.VERSION.SDK_INT>9){
             StrictMode.ThreadPolicy mypolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -54,13 +45,13 @@ public class MainActivity extends Activity {
         try{
 
             HttpClient objHttpClient = new DefaultHttpClient();
-            HttpPost   objHttpPost   =  new HttpPost(url);
+            HttpPost objHttpPost   =  new HttpPost("http://www.puneethbedre.com/rest/php_get_data.php");
             HttpResponse objHttpResponse = objHttpClient.execute(objHttpPost);
             HttpEntity objHttpEntity = objHttpResponse.getEntity();
             objInputStream = objHttpEntity.getContent();
 
         }catch (Exception e){
-            Log.d("CoffeShop","Error from InputStram==>"+e.toString());
+            Log.d("CoffeShop", "Error from InputStram==>" + e.toString());
         }
 
         //Change InputStream to String
@@ -93,37 +84,11 @@ public class MainActivity extends Activity {
 
             }//for
         }catch (Exception e ){
-           Log.d("CoffeShop","Error Up Value==>"+e.toString());
+            Log.d("CoffeShop","Error Up Value==>"+e.toString());
         }
 
     } //synJsonTOSQLite
 
 
 
-    private void testAddValue() {
-        objUserTable.addValueUser("user","Password","Officer");
-        objOrderTable.addValueOrder("Officer","Date","CoffeeOrder",4);
-    }// testAddValue
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
