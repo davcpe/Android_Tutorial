@@ -1,12 +1,16 @@
 package com.example.asus.tut1;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,21 +29,74 @@ public class MainActivity extends Activity {
 
     private  UserTABLE  objUserTable;
     private  OrderTABLE objOrderTable;
+    private  String strUserChoose,strPasswordChoose,strPasswordTrue, strName;
     //public static final String url = "http://www.puneethbedre.com/rest/php_get_data.php";
+    private EditText edtUser, edtPassword;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //Bind Widget
+        bindWidget();
 
         objUserTable = new UserTABLE(this);
         objOrderTable = new OrderTABLE(this);
-        testAddValue();
+        //testAddValue();
+
+
+        //delete All data
+        deleteAllData();
 
         //synJsonTOSQLite
         synJsonTOSQLite();
+
     }//OnCreate
+
+    public void clickLogin(View view){
+        strUserChoose = edtUser.getText().toString().trim();
+        strPasswordChoose = edtPassword.getText().toString().trim();
+
+        if(strUserChoose.equals("")|| strPasswordChoose.equals("")){
+            MyAlertDialog objMyAlert = new MyAlertDialog();
+            objMyAlert.errorDialog(MainActivity.this,"space occur","Please complete blank");
+            //Alert Error
+        }else{
+
+          checkUser();
+
+        }
+
+    }
+
+    private void checkUser() {
+        try{
+            String strData[] = objUserTable.searchUser(strUserChoose);
+            strPasswordTrue = strData[2];
+            strName  = strData[3];
+            Log.d("CoffeShop","Welcome"+strName);
+
+
+        }catch (Exception e){
+            MyAlertDialog objMyAlert = new MyAlertDialog();
+            objMyAlert.errorDialog(MainActivity.this, "There is no user","NO"+strUserChoose +"in my Database");
+
+        }
+
+    }
+
+    private void bindWidget() {
+        edtUser  = (EditText)findViewById(R.id.editText);
+        edtPassword = (EditText)findViewById(R.id.editText2);
+    }//Bind Widget
+
+    private void deleteAllData() {
+
+        SQLiteDatabase objSQLite = openOrCreateDatabase("Restaurant.db",MODE_PRIVATE,null);
+        objSQLite.delete("userTABLE",null,null);
+    }//delete All data
 
 
     private void synJsonTOSQLite() {

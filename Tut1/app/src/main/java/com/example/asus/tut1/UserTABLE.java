@@ -2,6 +2,7 @@ package com.example.asus.tut1;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -21,6 +22,32 @@ public class UserTABLE {
      writeSQLite = objMyOpenhelper.getWritableDatabase();
      readSQLite = objMyOpenhelper.getReadableDatabase();
     }// Constructor
+
+    public String[]searchUser(String strUSer){
+        try {
+
+            String strData[]= null;
+            Cursor objCursor = readSQLite.query(TABLE_USER,
+                    new String[] {COLUMN_ID_USER, COLUMN_USER,COLUMN_PASSWORD,COLUMN_OFFICER},COLUMN_USER+"=?",
+                    new String[] {String.valueOf(strUSer)}, null,null,null,null);
+            if (objCursor != null) {
+                if(objCursor.moveToFirst()){
+                    strData = new String[objCursor.getColumnCount()];
+                    strData[0] = objCursor.getString(0);
+                    strData[1] = objCursor.getString(1);
+                    strData[2] = objCursor.getString(2);
+                    strData[3] = objCursor.getString(3);
+                }// if2
+            }//if1
+
+            objCursor.close();
+            return strData;
+        }catch (Exception e){
+            return null;
+        }
+
+
+    }//search User
 
     public long addValueUser (String strUser, String strPassword, String strOfficer){
         ContentValues objContentValues = new ContentValues();
