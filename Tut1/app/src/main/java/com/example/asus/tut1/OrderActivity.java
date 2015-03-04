@@ -7,6 +7,7 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,18 +24,48 @@ import java.io.InputStreamReader;
 
 public class OrderActivity extends Activity {
 
+    //Explicit
+    private  CoffeeTABLE objCoffeeTable;
+    private  String[] strListCoffee, strListPrice;
+    private  int[]myTarget;
 
    // private  CoffeeTABLE objCofeeTable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        objCoffeeTable = new CoffeeTABLE(this);
+
         //Synchronize JSON SQLite
         synchronizeJSONtoCoffee();
 
+        //setUp All Array
+        setUPAllArray();
+
+        //Create ListView
+        createListView();
+
     }//Oncreate
+
+    private void createListView() {
+
+        int[]myTarget = {R.drawable.coffee_latte_1,R.drawable.coffee_latte_2,R.drawable.coffee_latte_3,R.drawable.coffee_latte_4,R.drawable.coffee_latte_5}; // Add Imagesm
+
+        MyAdapter objMyAdapter = new MyAdapter(OrderActivity.this, strListCoffee,strListPrice,myTarget);
+        ListView objListView = (ListView)findViewById(R.id.CoffeelistView);
+        objListView.setAdapter(objMyAdapter);
+    }//createListView
+
+    private void setUPAllArray() {
+        strListCoffee = objCoffeeTable.listCoffee();
+        strListPrice = objCoffeeTable.listPrice();
+
+        //int[]myTarget = {R.drawable.coffee_latte_1,R.drawable.coffee_latte_2,R.drawable.coffee_latte_3,R.drawable.coffee_latte_4,R.drawable.coffee_latte_5}; // Add Images
+
+    }//setUpAllArray
 
     private void synchronizeJSONtoCoffee() {
         //Change Policy
@@ -86,9 +117,9 @@ public class OrderActivity extends Activity {
                 JSONObject objJSONObject = objJSONArray.getJSONObject(i);
                 String strCoffee = objJSONObject.getString("Coffee");
                 String strPrice = objJSONObject.getString("Price");
-                CoffeeTABLE objCofeeTable = new CoffeeTABLE(this);
+               // CoffeeTABLE objCofeeTable = new CoffeeTABLE(this);
 
-                long insertValueCoffee  = objCofeeTable.addValueCoffee(strCoffee,strPrice);
+                long insertValueCoffee  = objCoffeeTable.addValueCoffee(strCoffee,strPrice);
 
             }//for
 
@@ -120,4 +151,4 @@ public class OrderActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-}
+}//OrderClass
