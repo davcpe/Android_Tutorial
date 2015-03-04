@@ -14,7 +14,7 @@ public class MyOpenHelper extends SQLiteOpenHelper {
     private static  final int    DATABASE_VERSION = 1 ;
     private static  final String USER_TABLE ="create table userTABLE (_id integer primary key,"+" user text, Password text, Officer text);";
     private static  final String ORDER_TABLE ="create table orderTABLE(_id integer primary key, "+" Officer text, Date text, CoffeeOrder text, Item integer);";
-
+    private static  final String Coffee_TABLE="create table coffeeTable(_id integer primary key,"+" Coffee text, Price text );";
 
     public MyOpenHelper(Context context) { // Constructor
         super(context,DATABASE_NAME,null,DATABASE_VERSION); //Constructor
@@ -26,6 +26,7 @@ public class MyOpenHelper extends SQLiteOpenHelper {
 
         db.execSQL(USER_TABLE);
         db.execSQL(ORDER_TABLE);
+        db.execSQL(Coffee_TABLE);
 
     }
 

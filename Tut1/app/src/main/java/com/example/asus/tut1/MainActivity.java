@@ -1,8 +1,12 @@
 package com.example.asus.tut1;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -29,6 +33,7 @@ public class MainActivity extends Activity {
 
     private  UserTABLE  objUserTable;
     private  OrderTABLE objOrderTable;
+    private  CoffeeTABLE objCofeeTable;
     private  String strUserChoose,strPasswordChoose,strPasswordTrue, strName;
     //public static final String url = "http://www.puneethbedre.com/rest/php_get_data.php";
     private EditText edtUser, edtPassword;
@@ -44,6 +49,9 @@ public class MainActivity extends Activity {
 
         objUserTable = new UserTABLE(this);
         objOrderTable = new OrderTABLE(this);
+        objCofeeTable = new CoffeeTABLE(this);//this == constructor
+
+
         //testAddValue();
 
 
@@ -78,6 +86,8 @@ public class MainActivity extends Activity {
             strName  = strData[3];
             Log.d("CoffeShop","Welcome"+strName);
 
+            checkPassword();
+
 
         }catch (Exception e){
             MyAlertDialog objMyAlert = new MyAlertDialog();
@@ -86,6 +96,43 @@ public class MainActivity extends Activity {
         }
 
     }
+
+    private void checkPassword() {
+        if (strPasswordChoose.equals(strPasswordTrue)) {
+
+
+
+            //Intent to Order Activity
+            wellCOmeUser();
+        }else{
+
+            MyAlertDialog objMyAlert = new MyAlertDialog();
+            objMyAlert.errorDialog(MainActivity.this,"Password False","Please Try again");
+        }
+
+    }//CheckPassword
+
+    private void wellCOmeUser() {
+
+        final AlertDialog.Builder objAlert = new AlertDialog.Builder(this);
+        objAlert.setIcon(R.drawable.welcome_icon);
+        objAlert.setTitle("Welcome to Davit Cafe");
+        objAlert.setMessage("Welcome"+strName+"\n"+"to Davit's cafe");
+        objAlert.setCancelable(false);
+        objAlert.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent objIntent = new Intent(MainActivity.this, OrderActivity.class);
+                objIntent.putExtra("Name",strName);
+                startActivity(objIntent);
+                finish();
+
+            }
+        });
+        objAlert.show();
+
+
+    }//welcome user
 
     private void bindWidget() {
         edtUser  = (EditText)findViewById(R.id.editText);
@@ -96,6 +143,7 @@ public class MainActivity extends Activity {
 
         SQLiteDatabase objSQLite = openOrCreateDatabase("Restaurant.db",MODE_PRIVATE,null);
         objSQLite.delete("userTABLE",null,null);
+        objSQLite.delete("coffeeTable",null,null);
     }//delete All data
 
 
@@ -151,7 +199,7 @@ public class MainActivity extends Activity {
 
             }//for
         }catch (Exception e ){
-           Log.d("CoffeShop","Error Up Value==>"+e.toString());
+           Log.d("CoffeShop","Error Update Value==>"+e.toString());
         }
 
     } //synJsonTOSQLite
@@ -161,6 +209,10 @@ public class MainActivity extends Activity {
     private void testAddValue() {
         objUserTable.addValueUser("user","Password","Officer");
         objOrderTable.addValueOrder("Officer","Date","CoffeeOrder",4);
+        objCofeeTable.addValueCoffee("Late","3.5");
+
+
+
     }// testAddValue
 
 
