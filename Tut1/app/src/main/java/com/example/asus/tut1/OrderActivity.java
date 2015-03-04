@@ -7,7 +7,11 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,6 +32,10 @@ public class OrderActivity extends Activity {
     private  CoffeeTABLE objCoffeeTable;
     private  String[] strListCoffee, strListPrice;
     private  int[]myTarget;
+    private  TextView txtShowOfficer;
+    private  EditText edtDesk;
+    private  String strMyOfficer, strMyDesk, strMyCoffee,strAmount;
+
 
    // private  CoffeeTABLE objCofeeTable;
 
@@ -37,7 +45,14 @@ public class OrderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        //Bind Widget
+        bindWidget();
+
         objCoffeeTable = new CoffeeTABLE(this);
+        //strMyDesk  =  edtDesk.getText().toString().trim();
+
+        //SetUp Text Officer
+        setUpTxtShow();
 
         //Synchronize JSON SQLite
         synchronizeJSONtoCoffee();
@@ -48,16 +63,57 @@ public class OrderActivity extends Activity {
         //Create ListView
         createListView();
 
+
+
+
     }//Oncreate
+
+    private void setUpTxtShow() {
+
+        strMyOfficer = getIntent().getExtras().getString("Name");
+        txtShowOfficer.setText(strMyOfficer);
+    }//SetUp Text Officer
+
+    private void bindWidget() {
+
+        txtShowOfficer = (TextView)findViewById(R.id.txtShowOfficer);
+        edtDesk        = (EditText)findViewById(R.id.edtDesk);
+    }//bindWidget
 
     private void createListView() {
 
         int[]myTarget = {R.drawable.coffee_latte_1,R.drawable.coffee_latte_2,R.drawable.coffee_latte_3,R.drawable.coffee_latte_4,R.drawable.coffee_latte_5}; // Add Imagesm
 
         MyAdapter objMyAdapter = new MyAdapter(OrderActivity.this, strListCoffee,strListPrice,myTarget);
-        ListView objListView = (ListView)findViewById(R.id.CoffeelistView);
+        final ListView objListView = (ListView)findViewById(R.id.CoffeelistView);
         objListView.setAdapter(objMyAdapter);
+
+        //Active Click
+        objListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Check Zero
+                strMyDesk = edtDesk.getText().toString().trim();
+                if(strMyDesk.equals("")){
+                    MyAlertDialog objMyAlertDialog = new MyAlertDialog();
+                    objMyAlertDialog.errorDialog(OrderActivity.this,"Customer's table?","Please input table number");
+
+                }else{
+                        strMyCoffee = strListCoffee[position];
+                        checklog();
+                }
+
+            }//event
+        });
+
     }//createListView
+
+    private void checklog() {
+        Log.d("order","Officer==>"+strMyOfficer);
+        Log.d("order","Desl==>"+strMyDesk);
+        Log.d("order","Coffee"+strMyCoffee);
+    }
 
     private void setUPAllArray() {
         strListCoffee = objCoffeeTable.listCoffee();
