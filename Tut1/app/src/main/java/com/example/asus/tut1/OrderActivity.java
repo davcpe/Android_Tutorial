@@ -1,6 +1,8 @@
 package com.example.asus.tut1;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -34,7 +36,7 @@ public class OrderActivity extends Activity {
     private  int[]myTarget;
     private  TextView txtShowOfficer;
     private  EditText edtDesk;
-    private  String strMyOfficer, strMyDesk, strMyCoffee,strAmount;
+    private  String strMyOfficer, strMyDesk, strMyCoffee,strItems;
 
 
    // private  CoffeeTABLE objCofeeTable;
@@ -101,7 +103,11 @@ public class OrderActivity extends Activity {
 
                 }else{
                         strMyCoffee = strListCoffee[position];
-                        checklog();
+                        //maschecklog();
+
+                    //Show Choose Items
+
+                    ShowChooseItem();
                 }
 
             }//event
@@ -109,10 +115,54 @@ public class OrderActivity extends Activity {
 
     }//createListView
 
+    private void ShowChooseItem() {
+
+        CharSequence[] charItems = {"1 cup ","2 cups","3 cups","4 cups","5 cups"};
+
+        AlertDialog.Builder objBuilder = new AlertDialog.Builder(this);
+        objBuilder.setIcon(R.drawable.questionicon);
+        objBuilder.setTitle("How many cups?");
+        objBuilder.setCancelable(false);
+        objBuilder.setSingleChoiceItems(charItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                switch (which){
+
+                    case 0:
+                         strItems="1";
+                         break;
+                    case 1:
+                        strItems ="2";
+                        break;
+                    case 2:
+                        strItems="3";
+                        break;
+                    case 3:
+                        strItems="4";
+                        break;
+                    case 4:
+                        strItems="5";
+                        break;
+
+                }//switch
+
+
+                dialog.dismiss();
+
+                checklog();
+            }
+        });
+        AlertDialog objAlertDialog = objBuilder.create();
+        objAlertDialog.show();
+
+    }//ShowChooseItem
+
     private void checklog() {
         Log.d("order","Officer==>"+strMyOfficer);
-        Log.d("order","Desl==>"+strMyDesk);
-        Log.d("order","Coffee"+strMyCoffee);
+        Log.d("order","Desk No.==>"+strMyDesk);
+        Log.d("order","Coffee ==>"+strMyCoffee);
+        Log.d("order","Item ==>"+strItems);
     }
 
     private void setUPAllArray() {
