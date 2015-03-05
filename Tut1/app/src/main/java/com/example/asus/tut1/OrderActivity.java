@@ -86,7 +86,7 @@ public class OrderActivity extends Activity {
 
         MyAdapter objMyAdapter = new MyAdapter(OrderActivity.this, strListCoffee,strListPrice,myTarget);
         final ListView objListView = (ListView)findViewById(R.id.CoffeelistView);
-        objListView.setAdapter(objMyAdapter);
+        objListView.setAdapter(objMyAdapter);  // Fusion Part with Activity_order and List_view_row
 
         //Active Click
         objListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
