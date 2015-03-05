@@ -34,4 +34,5 @@
             android:textStyle="bold|italic"
             android:layout_gravity="center_vertical" />
     </LinearLayout>
+
 </LinearLayout>
