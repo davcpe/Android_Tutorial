@@ -14,18 +14,24 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 
 public class OrderActivity extends Activity {
@@ -147,16 +153,50 @@ public class OrderActivity extends Activity {
 
                 }//switch
 
-
                 dialog.dismiss();
 
                 checklog();
+
+                //Up New Order
+                upNewOrder();
+
             }
         });
         AlertDialog objAlertDialog = objBuilder.create();
         objAlertDialog.show();
 
     }//ShowChooseItem
+
+    private void upNewOrder() {
+        //SetUp Policy
+        if(Build.VERSION.SDK_INT>9){
+            StrictMode.ThreadPolicy myPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(myPolicy);
+
+
+        }
+
+        //UpValue
+        try{
+
+            ArrayList<NameValuePair>objNameValuePair = new ArrayList<NameValuePair>();
+            objNameValuePair.add(new BasicNameValuePair("isADD","true"));
+            objNameValuePair.add(new BasicNameValuePair("Officer",strMyOfficer));
+            objNameValuePair.add(new BasicNameValuePair("Desk",strMyDesk));
+            objNameValuePair.add(new BasicNameValuePair("CoffeeOrder",strMyCoffee));
+            objNameValuePair.add(new BasicNameValuePair("Amount",strItems));
+
+            HttpClient objHttpClient = new DefaultHttpClient();
+            HttpPost objHttpPost  = new HttpPost("http://puneethbedre.com/rest/add_order.php");
+            objHttpPost.setEntity(new UrlEncodedFormEntity(objNameValuePair,"UTF-8"));
+            objHttpClient.execute(objHttpPost);
+
+            Toast.makeText(OrderActivity.this,"Update"+strMyOfficer,Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+            Log.d("CoffeShop","Update mySQL==>"+e.toString());
+        }
+    }
 
     private void checklog() {
         Log.d("order","Officer==>"+strMyOfficer);
