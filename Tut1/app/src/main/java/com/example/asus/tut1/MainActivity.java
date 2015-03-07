@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 
         objUserTable = new UserTABLE(this);
         objOrderTable = new OrderTABLE(this);
-        objCofeeTable = new CoffeeTABLE(this);//this == constructor
+        objCofeeTable = new CoffeeTABLE(this);//this == constructor, Create Table
 
 
         //testAddValue();
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
 
         if(strUserChoose.equals("")|| strPasswordChoose.equals("")){
             MyAlertDialog objMyAlert = new MyAlertDialog();
-            objMyAlert.errorDialog(MainActivity.this,"space occur","Please complete blank");
+            objMyAlert.errorDialog(MainActivity.this,"Missing Input Data","Please complete blank");
             //Alert Error
         }else{
 
@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
 
     private void checkUser() {
         try{
-            String strData[] = objUserTable.searchUser(strUserChoose);
+            String strData[] = objUserTable.searchUser(strUserChoose);//From EditText UserName Input
             strPasswordTrue = strData[2];
             strName  = strData[3];
             Log.d("CoffeShop","Welcome"+strName);
@@ -154,9 +154,9 @@ public class MainActivity extends Activity {
             StrictMode.setThreadPolicy(mypolicy);
         }//if
         InputStream objInputStream = null;
-        String strJSON ="";
-
+        String strJSON ="";//GetData
         //Create objInputStream
+
         try{
 
             HttpClient     objHttpClient   =  new DefaultHttpClient();
