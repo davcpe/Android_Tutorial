@@ -5,8 +5,8 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.example.asus.fragment"
-        minSdkVersion 14
+        applicationId "com.example.davcpe.fragment"
+        minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
