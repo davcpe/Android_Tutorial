@@ -90,7 +90,7 @@ public class OrderActivity extends Activity {
 
     private void createListView() {
 
-        int[]myTarget = {R.drawable.coffee_latte_1,R.drawable.coffee_latte_2,R.drawable.coffee_latte_3,R.drawable.coffee_latte_4,R.drawable.coffee_latte_5}; // Add Imagesm
+        int[]myTarget = {R.drawable.coffee_latte_1,R.drawable.coffee_latte_2,R.drawable.coffee_latte_3,R.drawable.coffee_latte_4,R.drawable.coffee_latte_5}; // Add Images
 
         MyAdapter objMyAdapter = new MyAdapter(OrderActivity.this, strListCoffee,strListPrice,myTarget);
         final ListView objListView = (ListView)findViewById(R.id.CoffeelistView);
