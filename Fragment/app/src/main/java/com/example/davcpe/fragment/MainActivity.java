@@ -1,43 +1,55 @@
 package com.example.davcpe.fragment;
 
+import android.content.Intent;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainActivity extends FragmentActivity {
-    MyPagerAdapter adapter;
-    ViewPager pager;
 
+public class MainActivity extends ActionBarActivity {
+
+    private Button btn;
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        adapter = new MyPagerAdapter(getSupportFragmentManager());
-
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(adapter);
-
-
-        ////////////////////////////////////////////////////////////////////////
-
-
-
-
-        Button btn_next = (Button)findViewById(R.id.btn_next);
-        btn_next.setOnClickListener(new OnClickListener() {
+    btn = (Button)findViewById(R.id.BtnLogin);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                pager.setCurrentItem(pager.getCurrentItem() + 1);
+                Intent objIntent  = new Intent(MainActivity.this,HomeActivity.class);
+                startActivity(objIntent);
+                finish();
             }
         });
 
-        Button btn_prev = (Button)findViewById(R.id.btn_prev);
-        btn_prev.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                pager.setCurrentItem(pager.getCurrentItem() - 1);
-            }
-        });
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
