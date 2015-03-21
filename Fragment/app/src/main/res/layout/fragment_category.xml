@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.davcpe.fragment.CategoryFragment"
@@ -6,4 +6,60 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-</FrameLayout>
+    <ImageView
+        android:layout_width="@dimen/img50dp"
+        android:layout_height="@dimen/img50dp"
+        android:id="@+id/imageMap"
+        android:src="@drawable/maps_icon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activity "
+        android:id="@+id/textView"
+        android:textSize="30dp"
+        android:layout_alignBottom="@+id/imageMap"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editAct"
+        android:textSize="25dp"
+        android:layout_below="@+id/textView"
+        android:hint="Select Activities :"
+        android:layout_marginTop="15dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editDistance"
+        android:layout_below="@+id/editAct"
+        android:hint="Counter Type:"
+        android:layout_marginTop="15dp"
+        android:textSize="25dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editDescription"
+        android:layout_below="@+id/editDistance"
+        android:text="Description:"
+        android:textSize="20dp"
+        android:layout_marginTop="25dp" />
+
+    <ImageView
+        android:layout_width="@dimen/img150dp"
+        android:layout_height="@dimen/img150dp"
+        android:id="@+id/imageButtonStart"
+        android:layout_below="@+id/editDescription"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:src="@drawable/start_button2" />
+</RelativeLayout>

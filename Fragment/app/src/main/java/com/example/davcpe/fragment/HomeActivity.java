@@ -14,7 +14,7 @@ import android.widget.ImageView;
 public class HomeActivity extends FragmentActivity {
     MyPagerAdapter adapter;
     ViewPager pager;
-    private ImageView imgCategory,imgAddfriend,imgRank,imgNotification;
+    private ImageView imgCategory,imgAddfriend,imgRank,imgNotification,imgMap;
 
 
     @Override
@@ -63,5 +63,10 @@ public class HomeActivity extends FragmentActivity {
                 pager.setCurrentItem(3);
             }
         });
+
+
+
+
+
     }
 }

@@ -26,11 +26,14 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             return  new RankFragment();
         else if(position == 3)
             return  new NotificationFragment();
+        else if(position == 4)
+            return  new MapFragment();
+
         return null;
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 }
