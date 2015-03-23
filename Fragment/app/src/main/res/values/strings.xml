@@ -1,10 +1,20 @@
 <resources>
     <string name="app_name">Fragment</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string-array name="davit">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
 
-<!-- TODO: Remove or change this placeholder text -->
+
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_test">TestActivity</string>
+
+
+
 </resources>

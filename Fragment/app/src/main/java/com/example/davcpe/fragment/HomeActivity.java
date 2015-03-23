@@ -1,5 +1,6 @@
 package com.example.davcpe.fragment;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -64,9 +65,20 @@ public class HomeActivity extends FragmentActivity {
             }
         });
 
-
-
-
+        imgMap =(ImageView)findViewById(R.id.imageMap);
+        imgMap.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pager.setCurrentItem(4);
+            }
+        });
 
     }
+
+    public void showMap(){
+
+        Intent obIntent = new Intent(HomeActivity.this,MapFragment.class);
+        startActivity(obIntent);
+        finish();
+      }
 }

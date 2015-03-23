@@ -28,7 +28,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             return  new NotificationFragment();
         else if(position == 4)
             return  new MapFragment();
-
         return null;
     }
 
