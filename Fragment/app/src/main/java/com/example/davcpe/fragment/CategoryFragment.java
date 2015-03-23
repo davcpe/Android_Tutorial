@@ -55,7 +55,6 @@ public class CategoryFragment extends Fragment  {
 
 
 
-
         //SelectActivity
         SelectActivity();
 
@@ -77,7 +76,7 @@ public class CategoryFragment extends Fragment  {
     private void TestSpinner() {
 
 
-    }
+    }//TestSpinner
 
     private void SelectActivity() {
 
