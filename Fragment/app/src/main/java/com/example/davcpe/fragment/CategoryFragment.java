@@ -31,6 +31,8 @@ public class CategoryFragment extends Fragment  {
     private EditText edtActivity;
     private Spinner spinnerActivity;
     private static final String[] activities = {"walk","cycling","yoga"};
+    private  String strItemAct = "Sleep";
+
 
 
 
@@ -43,6 +45,9 @@ public class CategoryFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         final View rootView = inflater.inflate(layout.fragment_category, container, false);
+
+
+
 
         //Images
         imgStart = (ImageView)rootView.findViewById(id.imageButtonStart);
@@ -103,6 +108,9 @@ public class CategoryFragment extends Fragment  {
             public void onClick(View v) {
 
                 imgStart.setImageResource(drawable.stop_icon2);
+
+
+
 
             }
         });
