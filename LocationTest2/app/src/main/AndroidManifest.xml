@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+
     <permission
         android:name="com.example.davcpe.locationtest2.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
