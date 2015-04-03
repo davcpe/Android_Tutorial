@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.example.davcpe.locationtest2"
+        applicationId "com.example.davcpe.locationplot"
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
@@ -22,6 +22,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
-    //compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.google.android.gms:play-services:3.2.65'
+
 }

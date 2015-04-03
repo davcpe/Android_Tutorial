@@ -162,7 +162,7 @@ public class MainActivity extends FragmentActivity {
             br.close();
 
        }catch(Exception e){
-          Log.d("Exception while downloading url", e.toString());
+          Log.d("Exception  url", e.toString());
         }finally{
             iStream.close();
             urlConnection.disconnect();
