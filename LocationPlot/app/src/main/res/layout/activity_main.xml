@@ -12,6 +12,25 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         tools:layout="@layout/abc_action_menu_layout" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/buttonNext"
+        android:layout_below="@+id/map"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView1"
+        android:textSize="20dp"
+        android:layout_below="@+id/buttonNext"
+        android:layout_toStartOf="@+id/buttonNext"
+        android:layout_marginTop="44dp" />
 </RelativeLayout>

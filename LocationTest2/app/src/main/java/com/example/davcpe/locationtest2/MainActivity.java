@@ -2,6 +2,7 @@ package com.example.davcpe.locationtest2;
 
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Menu;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,6 +42,12 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy
+                    = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         tvDistanceDuration = (TextView) findViewById(R.id.tv_distance_time);
 

@@ -1,9 +1,15 @@
 package com.example.davcpe.locationplot;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -15,6 +21,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+
+import org.w3c.dom.Document;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by rdsingh on 10/3/13.
@@ -26,6 +43,17 @@ public class MainActivity extends FragmentActivity
         com.google.android.gms.location.LocationListener,
         GooglePlayServicesClient.OnConnectionFailedListener{
     private GoogleMap myMap;            // map reference
+    private PolylineOptions lineOptions = null;
+    private LatLng point;
+    private Button btn1;
+    private TextView txtshowDistance,txtLat,txtLong;
+
+    Double a = 13.68714011267915;
+    Double b = 100.53525868803263;
+    LatLng startPosition = new LatLng(a, b);
+    LatLng endPosition = new LatLng(13.683660045847258, 100.53900808095932);
+
+
     private LocationClient myLocationClient;
     private static final LocationRequest REQUEST = LocationRequest.create()
             .setInterval(5000)         // 5 seconds
@@ -41,6 +69,29 @@ public class MainActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy
+                    = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+
+        btn1 = (Button)findViewById(R.id.buttonNext);
+
+        txtshowDistance =(TextView)findViewById(R.id.textView1);
+        GMapV2Direction mp = new GMapV2Direction();
+        Document doc = mp.getDocument(startPosition, endPosition, GMapV2Direction.MODE_DRIVING);
+        String distance = mp.getDistanceText(doc);
+        String duration = mp.getDurationText(doc);
+        txtshowDistance.setText(duration);
+
+
+        //On BTN1 Click
+        btn1click();
+
         getMapReference();
     }
 
@@ -68,6 +119,25 @@ public class MainActivity extends FragmentActivity
             myLocationClient.disconnect();
         }
     }
+
+
+    //Next to PageDetails
+   private  void  btn1click(){
+       btn1.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent objIntent = new Intent(MainActivity.this,CheckDetails.class);
+               startActivity(objIntent);
+               finish();
+
+           }
+       });
+   }
+
+
+
+
+
 
     /**
      *
@@ -113,6 +183,7 @@ public class MainActivity extends FragmentActivity
         if(myMap == null){
             myMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
+
         }
         if(myMap != null){
             myMap.setMyLocationEnabled(true);
@@ -154,6 +225,17 @@ public class MainActivity extends FragmentActivity
     @Override
     public void onLocationChanged(Location location) {
         gotoMyLocation(location.getLatitude(), location.getLongitude());
+        ///////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        LatLng EndPoint = new LatLng(location.getLatitude(), location.getLongitude());
+        //List all point
+        lineOptions = new PolylineOptions();
+
+
+
+
     }
 
     @Override
