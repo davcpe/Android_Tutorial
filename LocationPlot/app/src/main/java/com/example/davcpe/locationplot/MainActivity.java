@@ -205,9 +205,8 @@ public class MainActivity extends FragmentActivity
      */
     @Override
     public void onConnected(Bundle bundle) {
-        myLocationClient.requestLocationUpdates(
-                REQUEST,
-                this); // LocationListener
+        myLocationClient.requestLocationUpdates(REQUEST,this); // LocationListener
+
     }
 
     /**
