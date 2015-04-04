@@ -1,16 +1,16 @@
 package com.example.davcpe.locationplot;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
@@ -22,20 +22,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-
 import org.w3c.dom.Document;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-
-/**
- * Created by rdsingh on 10/3/13.
- */
+import java.util.Locale;
 
 
 public class MainActivity extends FragmentActivity
@@ -46,7 +37,10 @@ public class MainActivity extends FragmentActivity
     private PolylineOptions lineOptions = null;
     private LatLng point;
     private Button btn1;
-    private TextView txtshowDistance,txtLat,txtLong;
+    private TextView txtshowDistance,txtshowDetails,txtLat,txtLong;
+    Location location;
+    GPSTracker gpsTracker = new GPSTracker(MainActivity.this);
+
 
 
     Double a = 13.68714011267915;
@@ -83,6 +77,9 @@ public class MainActivity extends FragmentActivity
         btn1 = (Button)findViewById(R.id.buttonNext);
 
         txtshowDistance =(TextView)findViewById(R.id.textView1);
+
+        txtshowDetails = (TextView)findViewById(R.id.textView2);
+
         GMapV2Direction mp = new GMapV2Direction();
         Document doc = mp.getDocument(startPosition, endPosition, GMapV2Direction.MODE_DRIVING);
         String distance = mp.getDistanceText(doc);
@@ -90,10 +87,31 @@ public class MainActivity extends FragmentActivity
         txtshowDistance.setText(duration);
 
 
+
+
         //On BTN1 Click
         btn1click();
 
         getMapReference();
+    }
+    //Get Address
+    public String ConvertPointToLocation(String Latitude, String Longitude) {
+        String address = "";
+        Geocoder geoCoder = new Geocoder(getBaseContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geoCoder.getFromLocation(
+                    Float.parseFloat(Latitude), Float.parseFloat(Longitude), 1);
+
+            if (addresses.size() > 0) {
+                for (int index = 0; index < addresses.get(0)
+                        .getMaxAddressLineIndex(); index++)
+                    address += addresses.get(0).getAddressLine(index) + " ";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return address;
     }
 
     /**
@@ -148,7 +166,7 @@ public class MainActivity extends FragmentActivity
      */
     private void gotoMyLocation(double lat, double lng) {
         changeCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().target(new LatLng(lat, lng))
-                        .zoom(15.5f)
+                        .zoom(17.5f)
                         .bearing(0)
                         .tilt(25)
                         .build()
@@ -226,6 +244,17 @@ public class MainActivity extends FragmentActivity
     public void onLocationChanged(Location location) {
         gotoMyLocation(location.getLatitude(), location.getLongitude());
         ///////////////////////////////////////////////////////////////////////////////////////
+
+        String stringLatitude = "", stringLongitude = "", nameOfLocation="";
+        if (gpsTracker.canGetLocation()) {
+            stringLatitude = String.valueOf(gpsTracker.latitude);
+            stringLongitude = String.valueOf(gpsTracker.longitude);
+            nameOfLocation = ConvertPointToLocation(stringLatitude,stringLongitude);
+            String strDetails = "lat : "+stringLatitude+"Long : "+stringLongitude+"Name of Location : "+nameOfLocation;
+            txtshowDetails.setText(strDetails);
+
+        }
+
 
 
 
