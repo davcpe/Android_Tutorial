@@ -48,6 +48,7 @@ public class MainActivity extends FragmentActivity
     private Button btn1;
     private TextView txtshowDistance,txtLat,txtLong;
 
+
     Double a = 13.68714011267915;
     Double b = 100.53525868803263;
     LatLng startPosition = new LatLng(a, b);
