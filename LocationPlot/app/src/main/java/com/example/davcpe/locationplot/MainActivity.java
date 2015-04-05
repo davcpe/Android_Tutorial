@@ -1,7 +1,6 @@
 package com.example.davcpe.locationplot;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -12,7 +11,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -24,16 +22,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+
 import org.w3c.dom.Document;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import android.os.AsyncTask;
 
 public class MainActivity extends FragmentActivity
         implements GooglePlayServicesClient.ConnectionCallbacks,
@@ -43,9 +38,10 @@ public class MainActivity extends FragmentActivity
     private PolylineOptions lineOptions = null;
     private LatLng point;
     private Button btn1;
-    private TextView txtshowDistance,txtshowDetails,txtLat,txtLong;
+    private TextView txtshowDistance,txtshowDistance2,txtshowDetails,txtLat,txtLong;
     Location location;
     GPSTracker gpsTracker ;
+    private LatLng EndPoint;
 
 
 
@@ -82,19 +78,21 @@ public class MainActivity extends FragmentActivity
         //Create Instance object to get current position
         gpsTracker = new GPSTracker(MainActivity.this);
 
-
-
         btn1 = (Button)findViewById(R.id.buttonNext);
 
         txtshowDistance =(TextView)findViewById(R.id.textView1);
 
         txtshowDetails = (TextView)findViewById(R.id.textView2);
 
+        txtshowDistance2 = (TextView)findViewById(R.id.textView3);
+
         GMapV2Direction mp = new GMapV2Direction();
         Document doc = mp.getDocument(startPosition, endPosition, GMapV2Direction.MODE_DRIVING);
         String distance = mp.getDistanceText(doc);
         String duration = mp.getDurationText(doc);
         txtshowDistance.setText(distance);
+        /////////////////////////////////////////////////////
+
 
         //On BTN1 Click
         btn1click();
@@ -158,12 +156,6 @@ public class MainActivity extends FragmentActivity
            }
        });
    }
-
-
-
-
-
-
     /**
      *
      * @param lat - latitude of the location to move the camera to
@@ -251,28 +243,45 @@ public class MainActivity extends FragmentActivity
         gotoMyLocation(location.getLatitude(), location.getLongitude());
         ///////////////////////////////////////////////////////////////////////////////////////
 
-//        String stringLatitude = "", stringLongitude = "", nameOfLocation="";
-//        if (gpsTracker.canGetLocation()) {
-//            stringLatitude = String.valueOf(gpsTracker.latitude);
-//            stringLongitude = String.valueOf(gpsTracker.longitude);
-//            nameOfLocation = ConvertPointToLocation(stringLatitude,stringLongitude);
-//            String strDetails = "lat : "+stringLatitude+"Long : "+stringLongitude+"Name of Location : "+nameOfLocation;
-//            txtshowDetails.setText(strDetails);
-//
-//        }
-        if(gpsTracker.canGetLocation()) {
+        if(gpsTracker.getLocation() != null) {
 
-            double lat = gpsTracker.getLatitude();
-//            try {
-//                lat = gps.getLatitude();
-            double lon = gpsTracker.getLongitude();
+            if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy
+                        = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
 
-            String lat2 = String.valueOf(lat);
-            String lon2 = String.valueOf(lon);
-            String details = "lat : "+lat2+"long : "+lon2;
-            txtshowDetails.setText(details);
+               gpsTracker.updateGPSCoordinates();
+
+                double lat = gpsTracker.getLatitude();
+                double lon = gpsTracker.getLongitude();
+
+                String lat2 = String.valueOf(lat);
+                String lon2 = String.valueOf(lon);
+                String details = "lat : " + lat2 + "long : " + lon2;
+                txtshowDetails.setText(details);
+            /////////////////////////////////////////////////////
 
         }
+
+//////////////////////////////////////////////////////////////////////////////////
+
+//        if(gpsTracker.getLocation() != null) {
+//
+//            //EndPoint = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+//            Double lat3  = gpsTracker.getLatitude();
+//            Double lon3 = gpsTracker.getLongitude();
+//
+//            if( (lat3!= null)&&(lon3 != null) ){
+//                EndPoint = new LatLng(lat3, lon3);
+//                GMapV2Direction mp2 = new GMapV2Direction();
+//                Document doc2 = mp2.getDocument(startPosition, EndPoint, GMapV2Direction.MODE_DRIVING);
+//                String distance2 = mp2.getDistanceText(doc2);
+//                String duration2 = mp2.getDurationText(doc2);
+//                txtshowDistance2.setText(distance2);
+//            }
+//
+//        }
 
 
 

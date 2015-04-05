@@ -3,11 +3,10 @@ package com.example.davcpe.locationplot;
 /**
  * Created by davcpe on 4/3/2015.
  */
-import java.io.InputStream;
-import java.util.ArrayList;
+import android.location.Location;
+import android.util.Log;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,14 +18,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.google.android.gms.maps.model.LatLng;
+import java.io.InputStream;
+import java.util.ArrayList;
 
-import android.content.Context;
-import android.util.Log;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 public class GMapV2Direction {
     public final static String MODE_DRIVING = "driving";
     public final static String MODE_WALKING = "walking";
     public final static String MODE_CYCLING = "cycling";
+
+    Location location;
 
     public GMapV2Direction() { }
 
@@ -51,6 +53,7 @@ public class GMapV2Direction {
         }
         return null;
     }
+
 
     public String getDurationText (Document doc) {
         NodeList nl1 = doc.getElementsByTagName("duration");
