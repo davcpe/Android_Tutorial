@@ -40,15 +40,19 @@ public class MainActivity extends FragmentActivity
     private Button btn1;
     private TextView txtshowDistance,txtshowDistance2,txtshowDetails,txtLat,txtLong;
     Location location;
+    /////////////////////////Fix Start Position/////////////////////
     GPSTracker gpsTracker ;
+    GPSTracker objGpsTracker = new GPSTracker(MainActivity.this);
+    Double gpLat = objGpsTracker.getLatitude();
+    Double gpLong = objGpsTracker.getLongitude();
+
+    ////////////////////////////////////////////////////////////////////////////
     private LatLng EndPoint;
-
-
-
-    Double a = 13.68714011267915;
-    Double b = 100.53525868803263;
+    Double a = -27.4631387;
+    Double b = 153.0230726;
     LatLng startPosition = new LatLng(a, b);
     LatLng endPosition = new LatLng(13.683660045847258, 100.53900808095932);
+    LatLng endPosition2 = new LatLng(-27.4631387, 153.0230726);
 
 
     private LocationClient myLocationClient;
@@ -66,8 +70,6 @@ public class MainActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy
@@ -87,14 +89,13 @@ public class MainActivity extends FragmentActivity
         txtshowDistance2 = (TextView)findViewById(R.id.textView3);
 
         GMapV2Direction mp = new GMapV2Direction();
-        Document doc = mp.getDocument(startPosition, endPosition, GMapV2Direction.MODE_DRIVING);
+        Document doc = mp.getDocument(startPosition, endPosition2, GMapV2Direction.MODE_DRIVING);
         String distance = mp.getDistanceText(doc);
         String duration = mp.getDurationText(doc);
         txtshowDistance.setText(distance);
         /////////////////////////////////////////////////////
-
-
         //On BTN1 Click
+
         btn1click();
 
         getMapReference();
@@ -245,6 +246,8 @@ public class MainActivity extends FragmentActivity
 
         if(gpsTracker.getLocation() != null) {
 
+            Double lt = location.getLatitude();
+            Double ln = location.getLongitude();
             if (android.os.Build.VERSION.SDK_INT > 9) {
                 StrictMode.ThreadPolicy policy
                         = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -261,6 +264,14 @@ public class MainActivity extends FragmentActivity
                 String details = "lat : " + lat2 + "long : " + lon2;
                 txtshowDetails.setText(details);
             /////////////////////////////////////////////////////
+            LatLng EndPoint5 = new LatLng(lt,ln);
+            EndPoint = new LatLng(gpsTracker.getLatitude(),gpsTracker.getLongitude());
+            GMapV2Direction mp2 = new GMapV2Direction();
+                Document doc2 = mp2.getDocument(EndPoint5, EndPoint, GMapV2Direction.MODE_DRIVING);
+                String distance2 = mp2.getDistanceText(doc2);
+                String duration2 = mp2.getDurationText(doc2);
+                txtshowDistance2.setText(distance2);
+
 
         }
 
